@@ -32,13 +32,8 @@ def post_list(request):
     # 위 return코드와 같음
     # return render(request, 'blog/post_list.html', context)
 
-def post_detail(request):
-    """
-    localhost:8000/detail로 온 요청을
-    'blog/post_detail.html'을 render한 결과를 리턴
-
-    urls, views, template을 모두 작성해야 함
-    :param request:
-    :return:
-    """
-    return render(request, 'blog/post_detail.html')
+def post_detail(request, pk):
+    context = {
+        'post': Post.objects.get(pk=pk),
+    }
+    return render(request, 'blog/post_detail.html', context)

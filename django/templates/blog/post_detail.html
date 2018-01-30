@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,11 +7,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>DjangoGirls Tutorial</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
-<!--html:5[tab]-->
-<h1>Post Detail</h1>
-<!--lorem30[tab]-->
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci architecto, assumenda commodi corporis cum deleniti ducimus earum hic impedit in ipsa iste iure libero mollitia non odit, qui quis recusandae sapiente sunt unde vel vitae voluptate. Adipisci excepturi nulla reiciendis tenetur ut. Dolorem explicabo ipsa officia optio perferendis quae, quidem quod vero. Adipisci distinctio ea esse facere labore laboriosam laudantium quaerat quia tempore, veritatis voluptatem voluptatibus. Asperiores consequuntur dolore, enim exercitationem laboriosam molestias odit porro qui quo quod repellendus sed sequi sunt! Accusantium aperiam deleniti dolorem eligendi exercitationem id odit officiis quae quaerat quam, quas quasi, sunt voluptates. Suscipit, voluptate.</p>
+<div class="header">
+    <div class="container">
+        <h1><a href="">Django Girls Blog</a></h1>
+        <!--{% for post in posts %}-->
+        <!--<div>{{ post.title }}</div>-->
+        <!--{% endfor %}-->
+    </div>
+</div>
+
+<div class="container">
+<div class="post">
+    <p class="'post-date">published: {{ post.published_date }}</p>
+    <h2 class="post-title"><a href="">{{ post.title }}</a></h2>
+    <p class="post-content"> {{ post.content|linebreaksbr }}</p>
+</div>
+
+<!--<div>-->
+    <!--<p>published: 14.06.2014, 12:14</p>-->
+    <!--<h2><a href="">My second post</a></h2>-->
+    <!--<p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut f.</p>-->
+<!--</div>>-->
+</div>
 </body>
 </html>
