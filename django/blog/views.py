@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Post
 
 
 def post_list(request):
@@ -17,7 +18,19 @@ def post_list(request):
 
     # HTTP프로토콜로 텍스트 데이터 응답을 반환
     # return HttpResponse('<html><body><h1>Post list</h1><p>Post목록을 보여줄 예정입니다</p></body></html>')
-    return render(request, 'blog/post_list.html')
+
+    posts = Post.objects.all()
+    # render()함수에 전달한 dict객체 생성
+    context = {
+        'posts': posts,
+    }
+    return render(
+        request=request,
+        template_name='blog/post_list.html',
+        context=context,
+    )
+    # 위 return코드와 같음
+    # return render(request, 'blog/post_list.html', context)
 
 def post_detail(request):
     """
