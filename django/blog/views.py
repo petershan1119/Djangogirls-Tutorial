@@ -19,6 +19,8 @@ def post_list(request):
     # HTTP프로토콜로 텍스트 데이터 응답을 반환
     # return HttpResponse('<html><body><h1>Post list</h1><p>Post목록을 보여줄 예정입니다</p></body></html>')
 
+    # posts = Post.objects.all().order_by('-created_date')
+    # posts = Post.objects.order_by('-created_date')
     posts = Post.objects.all()
     # render()함수에 전달한 dict객체 생성
     context = {
@@ -37,6 +39,30 @@ def post_detail(request, pk):
         'post': Post.objects.get(pk=pk),
     }
     return render(request, 'blog/post_detail.html', context)
+
+def post_edit(request, pk):
+    """
+    pk에 해당하는 Post인스턴스를
+    context라는 dict에 'post'키에 할당
+    위에서 생성한 dict는 render의 context에 전달
+
+    사용하는 템플릿은 'blog/post_add.html'
+
+    url은 /3/edit/ <- 에 매칭되도록 urls.py에 작성
+    :param request:
+    :param pk:
+    :return:
+    """
+    post = Post.objects.get(pk=pk)
+    if request.method == "POST":
+        post.title = request.POST['title']
+        post.content = request.POST['content']
+        post.save()
+        return redirect('post-detail', pk=post.pk)
+    context = {
+        'post': post,
+    }
+    return render(request, 'blog/post_edit.html', context)
 
 def post_add(request):
     # localhost:8000/ 접근시
@@ -92,6 +118,9 @@ def post_delete(request, pk):
         post.delete()
 
     """
-    post = Post.objects.get(pk=pk)
-    post.delete()
-    return redirect('post-list')
+    if request.method == "POST":
+        post = Post.objects.get(pk=pk)
+        if request.user == post.author:
+            post.delete()
+            return redirect('post-list')
+        return redirect('post-detail', pk=post.pk)

@@ -7,6 +7,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         'auth.User',
         on_delete=models.CASCADE,
+        # on_delete=models.SET_NULL
     )
     title = models.CharField(max_length=200)
     content = models.TextField(blank=True)
@@ -16,6 +17,11 @@ class Post(models.Model):
     published_date = models.DateField(
         blank=True, null=True
     )
+
+    class Meta:
+        verbose_name = '글'
+        verbose_name_plural = f'{verbose_name}들'
+        ordering = ['-created_date']
 
     def publish(self):
         self.published_date = timezone.now()
