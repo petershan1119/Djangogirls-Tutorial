@@ -9,4 +9,8 @@
     <h2 class="post-title"><a href="">{{ post.title }}</a></h2>
     <p class="post-content"> {{ post.content|linebreaksbr }}</p>
 </div>
+    <form action="{% url 'post-delete' pk=post.pk %}" method="POST">
+    {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+    </form>
 {% endblock %}

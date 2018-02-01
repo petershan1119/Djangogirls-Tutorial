@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post
 
 
@@ -45,4 +45,53 @@ def post_add(request):
     # post_add.html은 base.html을 확장, title(h2)부분에 'Post add'라고 출력
 
     # return HttpResponse('Post add page!')
-    return render(request, 'blog/post_add.html')
+    if request.method == "POST":
+        # 요청의 method가 POST일 때
+        # HttpResponse로 POST요청에 담겨온
+        # title과 content를 합친 문자열 데이터를 보여줌
+        title = request.POST['title']
+        content = request.POST['content']
+        # ORM을 사용해서 title과 content에 해당하는
+        post = Post.objects.create(
+            author=request.user,
+            title=title,
+            content=content,
+        )
+        # post-detail이라는 URL name을 가진 뷰로
+        # 리디렉션 요청을 보냄
+        # 이 때, post-detail URL name으로 특정 URL을 만드려면
+        # pk값이 필요하므로 키워드 인수로 해당 값을 넘겨준다
+        return redirect('post-detail', pk=post.pk)
+        # return HttpResponse(f'{post.pk}, {post.title}. {post.content}')
+
+        # 만약 redirect가 아닌 render를 사용할 경우
+        # context = {
+        #     'post': post,
+        # }
+        # return render(request, 'blog/post_detail.html', context)
+
+        # 1. post_add페이지를 보여줌 (GET)
+        # 2. post_add페이지에서 글 작성 (POST요청)
+        # 3. post_add view에서 POST요청에 대한 처리 완료후, 브라우저에는 post-detail(pk=...)에 해당하는 주소로
+        # redirect를 하도록 응답 (301 redirect, URL: /3)
+        # 4. 브라우저는 301 redirect코드를 갖는 HTTP response를 받고, 해당 URL로 GET 요청을 보냄
+        # 5. '/3'주소로 온 요청은 다시 runserver -> Django코드 -> config/urls.py -> blog/urls.py
+        # -> def post_detail(request, pk)로 도착, post_detail뷰 처리가 완료된 post_detail.html의 내용을 응답
+        # -> 브라우저는 해당 내용을 보여줌
+    else:
+        # 요청의 method가 GET일 때
+        return render(request, 'blog/post_add.html')
+
+def post_delete(request, pk):
+    """
+    post_detail의 구조를 참조해서
+    pk에 해당하는 post를 삭제하는 view를 구현하고 url과 연결
+
+    삭제코드
+        post = Post.objects.get(pk=pk)
+        post.delete()
+
+    """
+    post = Post.objects.get(pk=pk)
+    post.delete()
+    return redirect('post-list')
