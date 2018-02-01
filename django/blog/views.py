@@ -62,7 +62,7 @@ def post_edit(request, pk):
     context = {
         'post': post,
     }
-    return render(request, 'blog/post_edit.html', context)
+    return render(request, 'blog/post_add_edit.html', context)
 
 def post_add(request):
     # localhost:8000/ 접근시
@@ -106,7 +106,7 @@ def post_add(request):
         # -> 브라우저는 해당 내용을 보여줌
     else:
         # 요청의 method가 GET일 때
-        return render(request, 'blog/post_add.html')
+        return render(request, 'blog/post_add_edit.html')
 
 def post_delete(request, pk):
     """
