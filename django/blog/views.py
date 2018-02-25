@@ -42,7 +42,7 @@ def post_detail(request, pk):
 
 def post_edit(request, pk):
     """
-    pk에 해당하는 Post인스턴스를
+    # pk에 해당하는 Post인스턴스를
     context라는 dict에 'post'키에 할당
     위에서 생성한 dict는 render의 context에 전달
 
